@@ -6,14 +6,14 @@
 
 int taille_fenetre = 800;
 float t = 0;
-float deg = 0.001;
+float deg = 0.1;
 int eyex = 1;
 int eyey = 0;
 int eyez = 10;
 
-int centerx = 10;
-int centery = 0;
-int centerz = 10;
+float centerx = 10;
+float centery = 5;
+float centerz = 10;
 
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
@@ -87,7 +87,7 @@ void Affichage(){
     far = 1000;
 
     glFrustum(left, right, bottom, top, near, far);
-    gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+    gluLookAt(eyex, eyey, eyez, eyex+10, eyey+5, eyez+10, upx, upy, upz);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -117,27 +117,27 @@ void Animer(){
 }
 
 void GererClavier(unsigned char touche, int x, int y){
-    float rayon = centerz;
+    float rayon = 10;
     printf(" Touche: %c Souris : %d %d \n",touche,x,y);
 
     /* Avancer, reculer*/
     if (touche == 'z'){
         eyex += 1;
-        centerx += 1;
+        eyey += 1;
     }
     if (touche == 's'){
         eyex -= 1;
-        centerx -= 1;
+        eyey -= 1;
     }
 
     /* Gauche, droite*/
     if (touche == 'q'){
-        t -= deg;
+        t += deg;
         centerx = rayon * cos(t);
         centery = rayon * sin(t);
     }
     if (touche == 'd'){
-        t += deg;
+        t -= deg;
         centerx = rayon * cos(t);
         centery = rayon * sin(t);
     }
