@@ -1,3 +1,7 @@
 # On ignore le dossier build
 
 /build
+/archive
+
+# On ignore l'éxécutable
+main
