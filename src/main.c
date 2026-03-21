@@ -3,17 +3,16 @@
 #include "GL/gl.h"
 #include "GL/glut.h"
 #include "math.h"
+#include "vecteur.h"
+#include "joueur.h"
 
 int taille_fenetre = 800;
-float t = 0;
-float deg = 0.1;
-int eyex = 1;
-int eyey = 0;
-int eyez = 10;
+float rota_z = 0.1; // Rotation autour de z
 
-float centerx = 10;
-float centery = 5;
-float centerz = 10;
+vecteur position = {1,0,10};
+vecteur devant = {1,0,0};
+vecteur haut = {0,0,1};
+vecteur droite = {0,1,0};
 
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
@@ -87,7 +86,9 @@ void Affichage(){
     far = 1000;
 
     glFrustum(left, right, bottom, top, near, far);
-    gluLookAt(eyex, eyey, eyez, eyex+10, eyey+5, eyez+10, upx, upy, upz);
+    gluLookAt(position.x, position.y, position.z, 
+        position.x+devant.x, position.y+devant.y, position.z+devant.z,
+         haut.x, haut.y, haut.z);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -122,24 +123,32 @@ void GererClavier(unsigned char touche, int x, int y){
 
     /* Avancer, reculer*/
     if (touche == 'z'){
-        eyex += 1;
-        eyey += 1;
+        position = addition(position, devant);
     }
     if (touche == 's'){
-        eyex -= 1;
-        eyey -= 1;
+        position = soustraction(position, devant);
     }
 
     /* Gauche, droite*/
     if (touche == 'q'){
-        t += deg;
-        centerx = rayon * cos(t);
-        centery = rayon * sin(t);
+        devant = rota_autour_Z(devant, rota_z);
+        droite = rota_autour_Z(droite, rota_z);
+
+        devant = normalisation(devant);
+        droite = normalisation(droite);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
     }
     if (touche == 'd'){
-        t -= deg;
-        centerx = rayon * cos(t);
-        centery = rayon * sin(t);
+        devant = rota_autour_Z(devant, -rota_z);
+        droite = rota_autour_Z(droite, -rota_z);
+
+        devant = normalisation(devant);
+        droite = normalisation(droite);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
     }
 }
 
