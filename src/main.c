@@ -161,6 +161,17 @@ void GererClavier(unsigned char touche, int x, int y){
         printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
         printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
     }
+
+    if (touche == 'e'){
+        haut = rota_autour_X(haut, rota_z);
+        droite = rota_autour_X(droite, rota_z);
+
+        haut = normalisation(haut);
+        droite = normalisation(droite);
+
+        printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
+    }
 }
 
 int main(int argc, char* argv[]){

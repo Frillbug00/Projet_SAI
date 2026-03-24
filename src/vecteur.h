@@ -13,7 +13,9 @@ typedef struct vecteur{
 
 vecteur addition(vecteur vect1, vecteur vect2);
 vecteur soustraction(vecteur vect1, vecteur vect2);
-vecteur produit_vect(vecteur vect1, float f);
+vecteur produit(vecteur vect1, float f);
 vecteur normalisation(vecteur vect);
+float produit_scalaire(vecteur vect1, vecteur vect2);
+vecteur produit_vectoriel(vecteur vect1, vecteur vect2);
 
 #endif

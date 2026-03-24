@@ -10,5 +10,6 @@
 
 vecteur rota_autour_Z(vecteur v, float angle);
 vecteur rota_autour_Y(vecteur v, float angle);
+vecteur rota_autour_X(vecteur v, float angle);
 
 #endif
