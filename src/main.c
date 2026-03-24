@@ -121,7 +121,8 @@ void GererClavier(unsigned char touche, int x, int y){
     float rayon = 10;
     printf(" Touche: %c Souris : %d %d \n",touche,x,y);
 
-    /* Avancer, reculer*/
+    
+    /* Avancer, reculer */
     if (touche == 'z'){
         position = addition(position, devant);
     }
@@ -129,7 +130,8 @@ void GererClavier(unsigned char touche, int x, int y){
         position = soustraction(position, devant);
     }
 
-    /* Gauche, droite*/
+    /* Version 1 :
+    // Gauche, droite 
     if (touche == 'q'){
         devant = rota_autour_Z(devant, rota_z);
         droite = rota_autour_Z(droite, rota_z);
@@ -165,6 +167,74 @@ void GererClavier(unsigned char touche, int x, int y){
     if (touche == 'e'){
         haut = rota_autour_X(haut, rota_z);
         droite = rota_autour_X(droite, rota_z);
+
+        haut = normalisation(haut);
+        droite = normalisation(droite);
+
+        printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
+    }
+
+    /*Version 2*/
+
+    // Rotation sur l'axe Z
+    if (touche == 'q'){
+        devant = rodriguez(devant, haut, rota_z);
+        droite = rodriguez(droite, haut, rota_z);
+
+        devant = normalisation(devant);
+        droite = normalisation(droite);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
+    }
+    if (touche == 'd'){
+        devant = rodriguez(devant, haut, -rota_z);
+        droite = rodriguez(droite, haut, -rota_z);
+
+        devant = normalisation(devant);
+        droite = normalisation(droite);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
+    }
+
+    // Rotation sur l'axe Y
+    if (touche == 'a'){
+        devant = rodriguez(devant, droite, rota_z);
+        haut = rodriguez(haut, droite, rota_z);
+
+        devant = normalisation(devant);
+        haut = normalisation(haut);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
+    }
+    if (touche == 'e'){
+        devant = rodriguez(devant, droite, -rota_z);
+        haut = rodriguez(haut, droite, -rota_z);
+
+        devant = normalisation(devant);
+        haut = normalisation(haut);
+
+        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
+        printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
+    }
+
+    // Rotation sur l'axe X
+    if (touche == 'w'){
+        haut = rodriguez(haut, devant, rota_z);
+        droite = rodriguez(droite, devant, rota_z);
+
+        haut = normalisation(haut);
+        droite = normalisation(droite);
+
+        printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
+        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
+    }
+    if (touche == 'c'){
+        haut = rodriguez(haut, devant, -rota_z);
+        droite = rodriguez(droite, devant, -rota_z);
 
         haut = normalisation(haut);
         droite = normalisation(droite);
