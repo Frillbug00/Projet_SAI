@@ -77,15 +77,6 @@ void Affichage(){
     int left, right, bottom, top, near, far;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /* TEST POUR L'ATH
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-taille_fenetre,taille_fenetre,-taille_fenetre,taille_fenetre, 0, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 45);
-    */
-
     /* Interface 3D*/
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -128,6 +119,22 @@ void Affichage(){
     glVertex3f(0,0,0);
     glVertex3f(0,0,1000);
     glEnd();
+
+    /*Interface 2D*/
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0,taille_fenetre,0,taille_fenetre, 0, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    char* str_vitesse = "vitesse";
+    int test_aff = 0;
+    glColor3f(1, 1, 1);
+    for (test_aff = 0; test_aff < 7; test_aff++){
+        glRasterPos2f(10 + test_aff * 10,taille_fenetre - 10);
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str_vitesse[test_aff]);
+    }
+
     glutSwapBuffers();
 }
 
