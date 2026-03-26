@@ -8,11 +8,14 @@
 #include "math.h"
 #include "vecteur.h"
 
-typedef struct {
+typedef struct ennemies{
     int type;
     float velocite;
     vecteur position, devant, haut, droite;
 }ennemies;
 
+ennemies init_ennemies(int type, float x, float y, float z);
+
+void afficher_ennemi(ennemies e);
 
 #endif

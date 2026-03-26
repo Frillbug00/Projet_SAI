@@ -5,6 +5,7 @@
 #include "math.h"
 #include "vecteur.h"
 #include "joueur.h"
+#include "ennemies.h"
 
 int taille_fenetre = 800;
 float rota_z = 0.1; // Rotation autour de z
@@ -111,6 +112,8 @@ void Affichage(){
     afficherCube(20,20,20,30,30,30);
     //affichage_sol();
     glEnd();
+    ennemies e = init_ennemies(1, 5, 5, 5);
+    afficher_ennemi(e);
     glBegin(GL_LINES);
 
     glColor3f(1, 0, 0);
