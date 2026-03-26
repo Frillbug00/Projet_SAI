@@ -85,6 +85,7 @@ void Affichage(){
     glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 45);
     */
 
+    /* Interface 3D*/
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
