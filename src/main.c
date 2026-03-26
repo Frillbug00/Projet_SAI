@@ -19,6 +19,36 @@ vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 /*---------------------------*/
 
+void affichage_vitesse(){
+    char* str_vitesse = "vitesse :";
+    int aff = 0;
+    char str_nbr[10];
+    char bout;
+
+    sprintf(str_nbr, "%f", velocite);
+    glColor3f(1, 1, 1);
+    for (aff = 0; aff < 9; aff++){
+        glRasterPos2f(10 + aff * 10,taille_fenetre - 10);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_vitesse[aff]);
+    }
+    aff = 0;
+    while ((bout = str_nbr[aff]) != '\0'){
+        glRasterPos2f(10 + aff * 10,taille_fenetre - 20);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_nbr[aff]);
+        aff++;
+    }
+
+    /* Affichage du rectangle de vitesse*/
+    glBegin(GL_QUADS);
+
+    glVertex2f(10,10);
+    glVertex2f(30,10);
+    glVertex2f(30,10+velocite*50000);
+    glVertex2f(10,10+velocite*50000);
+
+    glEnd();
+}
+
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
     // face basse
@@ -127,13 +157,7 @@ void Affichage(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    char* str_vitesse = "vitesse";
-    int test_aff = 0;
-    glColor3f(1, 1, 1);
-    for (test_aff = 0; test_aff < 7; test_aff++){
-        glRasterPos2f(10 + test_aff * 10,taille_fenetre - 10);
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, str_vitesse[test_aff]);
-    }
+    affichage_vitesse();
 
     glutSwapBuffers();
 }
