@@ -11,11 +11,15 @@
 typedef struct ennemies{
     int type;
     float velocite;
-    vecteur position, devant, haut, droite;
+    vecteur position, direction;
 }ennemies;
 
 ennemies init_ennemies(int type, float x, float y, float z);
 
 void afficher_ennemi(ennemies e);
+
+void update_ennemies(ennemies *e);
+
+float random_float(float min, float max);
 
 #endif

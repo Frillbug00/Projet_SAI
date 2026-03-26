@@ -13,12 +13,14 @@ float rota_z = 0.1; // Rotation autour de z
 /*Représentation joueur*/
 float velocite = 0;
 float vitesse = 0.0001;
-vecteur position = {1,0,10};
+vecteur position = {-20,-20,10};
 vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 /*---------------------------*/
 
+/*Les ennemies*/
+ennemies e1, e2, e3;
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
     // face basse
@@ -65,11 +67,24 @@ void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 }
 
 void affichage_sol(){
-    glColor3f(0.9, 0.9, 0.9);
-    glVertex3f(10000, 10000, 0);
-    glVertex3f(-10000, 10000, 0);
-    glVertex3f(-10000, -10000, 0);
-    glVertex3f(10000, -10000, 0);
+    float taille = 1000.0f; // moitié de la largeur et longueur du sol
+
+    glBegin(GL_QUADS);
+
+    // coin bas gauche
+    glColor3f(0.6f, 0.6f, 0.5f); // sable un peu foncé
+    glVertex3f(-taille, -taille, 0.0f);
+
+    // coin bas droit
+    glVertex3f(taille, -taille, 0.0f);
+
+    // coin haut droit
+    glVertex3f(taille, taille, 0.0f);
+
+    // coin haut gauche
+    glVertex3f(-taille, taille, 0.0f);
+
+    glEnd();
 }
 
 void Affichage(){
@@ -109,10 +124,12 @@ void Affichage(){
     glLoadIdentity();
     glBegin(GL_QUADS);
     afficherCube(20,20,20,30,30,30);
-    //affichage_sol();
+    affichage_sol();
     glEnd();
-    ennemies e = init_ennemies(1, 5, 5, 5);
-    afficher_ennemi(e);
+    afficher_ennemi(e1);
+        afficher_ennemi(e2);
+    afficher_ennemi(e3);
+
     glBegin(GL_LINES);
 
     glColor3f(1, 0, 0);
@@ -132,6 +149,10 @@ void Affichage(){
 
 void Animer(){
     position = addition(position, produit(devant, velocite));
+    update_ennemies(&e1);
+        update_ennemies(&e2);
+    update_ennemies(&e3);
+
     glutPostRedisplay();
 }
 
@@ -271,6 +292,9 @@ int main(int argc, char* argv[]){
     glutInitWindowPosition(50, 50);
     glutCreateWindow("Une fenetre OpenGL");
     glEnable(GL_DEPTH_TEST);
+    e1 = init_ennemies(1, 10, 10, 5);
+    e2 = init_ennemies(1, 10, 10, 15);
+    e3 = init_ennemies(1, 10, 10, 10);
     glutDisplayFunc(Affichage);
     glutIdleFunc(Animer);
     glutKeyboardFunc(GererClavier);
