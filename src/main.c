@@ -292,9 +292,9 @@ int main(int argc, char* argv[]){
     glutInitWindowPosition(50, 50);
     glutCreateWindow("Une fenetre OpenGL");
     glEnable(GL_DEPTH_TEST);
-    e1 = init_ennemies(1, 10, 10, 5);
-    e2 = init_ennemies(1, 10, 10, 15);
-    e3 = init_ennemies(1, 10, 10, 10);
+    e1 = init_ennemi(1, 10, 10, 5);
+    e2 = init_ennemi(1, 10, 10, 15);
+    e3 = init_ennemi(1, 10, 10, 10);
     glutDisplayFunc(Affichage);
     glutIdleFunc(Animer);
     glutKeyboardFunc(GererClavier);
