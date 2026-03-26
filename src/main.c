@@ -24,13 +24,17 @@ void affichage_vitesse(){
     int aff = 0;
     char str_nbr[10];
     char bout;
+    float pos_sup;
 
+    /*Affichage du mot "vitesse"*/
     sprintf(str_nbr, "%f", velocite);
     glColor3f(1, 1, 1);
     for (aff = 0; aff < 9; aff++){
         glRasterPos2f(10 + aff * 10,taille_fenetre - 10);
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_vitesse[aff]);
     }
+
+    /*Affichage de la vitesse via un nombre*/
     aff = 0;
     while ((bout = str_nbr[aff]) != '\0'){
         glRasterPos2f(10 + aff * 10,taille_fenetre - 20);
@@ -40,13 +44,29 @@ void affichage_vitesse(){
 
     /* Affichage du rectangle de vitesse*/
     glBegin(GL_QUADS);
+    
+    pos_sup = velocite*25000;
 
     glVertex2f(10,10);
     glVertex2f(30,10);
-    glVertex2f(30,10+velocite*50000);
-    glVertex2f(10,10+velocite*50000);
+    glVertex2f(30,10+pos_sup);
+    glVertex2f(10,10+pos_sup);
 
     glEnd();
+}
+
+void afficher_axes(){
+    glColor3f(1, 0, 0);
+    glVertex3f(0,0,0);
+    glVertex3f(1000,0,0);
+
+    glColor3f(0, 1, 0);
+    glVertex3f(0,0,0);
+    glVertex3f(0,1000,0);
+
+    glColor3f(0, 0, 1);
+    glVertex3f(0,0,0);
+    glVertex3f(0,0,1000);
 }
 
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
@@ -136,18 +156,7 @@ void Affichage(){
     ennemies e = init_ennemies(1, 5, 5, 5);
     afficher_ennemi(e);
     glBegin(GL_LINES);
-
-    glColor3f(1, 0, 0);
-    glVertex3f(0,0,0);
-    glVertex3f(1000,0,0);
-
-    glColor3f(0, 1, 0);
-    glVertex3f(0,0,0);
-    glVertex3f(0,1000,0);
-
-    glColor3f(0, 0, 1);
-    glVertex3f(0,0,0);
-    glVertex3f(0,0,1000);
+    afficher_axes();
     glEnd();
 
     /*Interface 2D*/
@@ -156,7 +165,8 @@ void Affichage(){
     glOrtho(0,taille_fenetre,0,taille_fenetre, 0, 1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
+    
+    /*Contenu de l'interface 2D*/
     affichage_vitesse();
 
     glutSwapBuffers();
