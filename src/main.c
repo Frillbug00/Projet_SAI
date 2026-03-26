@@ -9,10 +9,14 @@
 int taille_fenetre = 800;
 float rota_z = 0.1; // Rotation autour de z
 
+/*Représentation joueur*/
+float velocite = 0;
+float vitesse = 0.0001;
 vecteur position = {1,0,10};
 vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
+/*---------------------------*/
 
 void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
@@ -71,6 +75,16 @@ void Affichage(){
     int nbr, upx, upy, upz;
     int left, right, bottom, top, near, far;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    /* TEST POUR L'ATH
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-taille_fenetre,taille_fenetre,-taille_fenetre,taille_fenetre, 0, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 45);
+    */
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -114,6 +128,7 @@ void Affichage(){
 }
 
 void Animer(){
+    position = addition(position, produit(devant, velocite));
     glutPostRedisplay();
 }
 
@@ -124,10 +139,12 @@ void GererClavier(unsigned char touche, int x, int y){
     
     /* Avancer, reculer */
     if (touche == 'z'){
-        position = addition(position, devant);
+        //position = addition(position, devant);
+        velocite += vitesse;
     }
     if (touche == 's'){
-        position = soustraction(position, devant);
+        //position = soustraction(position, devant);
+        velocite -= vitesse;
     }
 
     /* Version 1 :
@@ -201,8 +218,8 @@ void GererClavier(unsigned char touche, int x, int y){
 
     // Rotation sur l'axe Y
     if (touche == 'a'){
-        devant = rodriguez(devant, droite, rota_z);
-        haut = rodriguez(haut, droite, rota_z);
+        devant = rodriguez(devant, droite, -rota_z);
+        haut = rodriguez(haut, droite, -rota_z);
 
         devant = normalisation(devant);
         haut = normalisation(haut);
@@ -211,8 +228,8 @@ void GererClavier(unsigned char touche, int x, int y){
         printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
     }
     if (touche == 'e'){
-        devant = rodriguez(devant, droite, -rota_z);
-        haut = rodriguez(haut, droite, -rota_z);
+        devant = rodriguez(devant, droite, rota_z);
+        haut = rodriguez(haut, droite, rota_z);
 
         devant = normalisation(devant);
         haut = normalisation(haut);
