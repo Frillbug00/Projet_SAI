@@ -6,7 +6,10 @@
 #include "vecteur.h"
 #include "joueur.h"
 #include "ennemies.h"
+#include "projectiles.h"
 #define NEAR 5
+#define V_MAX 0.03
+
 int taille_fenetre = 800;
 float taille_joueur = 1;
 float rota_z = 0.1; // Rotation autour de z
@@ -181,6 +184,7 @@ void Affichage(){
     affichage_sol();
     glEnd();
     afficher_ennemies();
+    afficher_projectiles();
 
     glBegin(GL_LINES);
     afficher_axes();
@@ -202,7 +206,7 @@ void Affichage(){
 void Animer(){
     position = addition(position, produit(devant, velocite));
     update_ennemies(devant, position);
-
+    update_projectiles();
     glutPostRedisplay();
 }
 
@@ -210,7 +214,9 @@ void GererClavier(unsigned char touche, int x, int y){
     float rayon = 10;
     printf(" Touche: %c Souris : %d %d \n",touche,x,y);
 
-    
+    if (touche == ' '){
+        tirer_double_projectile(position, devant, droite, haut);
+    }
     /* Avancer, reculer */
     if (touche == 'z'){
         //position = addition(position, devant);
@@ -336,6 +342,7 @@ void GererClavier(unsigned char touche, int x, int y){
 }
 
 int main(int argc, char* argv[]){
+    init_liste_projectile();
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(taille_fenetre, taille_fenetre);
