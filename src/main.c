@@ -6,8 +6,9 @@
 #include "vecteur.h"
 #include "joueur.h"
 #include "ennemies.h"
-
+#define NEAR 5
 int taille_fenetre = 800;
+float taille_joueur = 1;
 float rota_z = 0.1; // Rotation autour de z
 
 /*Représentation joueur*/
@@ -19,6 +20,19 @@ vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 /*---------------------------*/
 
+int colision(){
+    if (position.z <=0+NEAR){
+        printf("COLISION : Sous la map\n");
+    }
+    for(int i=0;i<nb_ennemies;i++){
+        vecteur le_pos = l_e[i].position;
+        float d_centre = pow((le_pos.x-position.x), 2)+pow((le_pos.y-position.y), 2)+pow((le_pos.z-position.z), 2);
+        float d_rayons = pow(taille_joueur, 2)+pow(RAYON, 2);
+        if(d_rayons+5>d_centre){
+            printf("COLISION : Asteroide\n");
+        }
+    }
+}
 void affichage_vitesse(){
     char* str_vitesse = "vitesse :";
     int aff = 0;
@@ -171,7 +185,7 @@ void Affichage(){
     glBegin(GL_LINES);
     afficher_axes();
     glEnd();
-
+    int i = colision();
     /*Interface 2D*/
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
