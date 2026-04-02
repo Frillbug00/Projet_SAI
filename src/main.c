@@ -126,9 +126,7 @@ void Affichage(){
     afficherCube(20,20,20,30,30,30);
     affichage_sol();
     glEnd();
-    afficher_ennemi(e1);
-        afficher_ennemi(e2);
-    afficher_ennemi(e3);
+    afficher_ennemies();
 
     glBegin(GL_LINES);
 
@@ -149,9 +147,7 @@ void Affichage(){
 
 void Animer(){
     position = addition(position, produit(devant, velocite));
-    update_ennemies(&e1);
-        update_ennemies(&e2);
-    update_ennemies(&e3);
+    update_ennemies(devant, position);
 
     glutPostRedisplay();
 }

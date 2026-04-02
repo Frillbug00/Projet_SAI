@@ -7,24 +7,24 @@
 #include "GL/glut.h"
 #include "math.h"
 #include "vecteur.h"
-#define NB_MAX_ENNEMIES 20
+#define NB_MAX_ENNEMIES 50
 #define RAYON 2
 typedef struct ennemies{
     int type;
     float velocite;
     vecteur position, direction;
 }ennemies;
-int nb_ennemies = 0;
-ennemies l_e[];
+extern int nb_ennemies;
+extern ennemies l_e[NB_MAX_ENNEMIES];
 ennemies init_ennemi(int type, float x, float y, float z);
 
-void afficher_ennemi(ennemies e);
+void afficher_ennemi(ennemies *e);
 
 void update_ennemi(ennemies *e);
 
-void afficher_ennemies(ennemies e);
+void afficher_ennemies();
 
-void update_ennemies(ennemies *e);
+void update_ennemies(vecteur devant, vecteur p);
 
 float random_float(float min, float max);
 
