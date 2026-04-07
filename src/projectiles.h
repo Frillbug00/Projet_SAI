@@ -29,4 +29,5 @@ void tirer_projectile(vecteur p, vecteur devant);
 
 void tirer_double_projectile(vecteur position, vecteur devant, vecteur droite, vecteur haut);
 
+int verifier_collision_projectile(projectiles *proj);
 #endif
