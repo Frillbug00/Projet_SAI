@@ -147,6 +147,14 @@ void affichage_sol(){
     glEnd();
     glDisable(GL_TEXTURE_2D);
 }
+void affichage_etoile(float x, float y, float z, float rayon, float r, float g, float b){
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glColor3f(r, g, b);
+    glutSolidSphere(rayon, 20, 20);
+    glPopMatrix();
+}
+
 void affichage_ciel(){
     float taille = 500.0f;
     float r_haut = 0.08f, g_haut = 0.08f, b_haut = 0.12f, r_bas = 0.12f, g_bas = 0.12f, b_bas = 0.27f;
@@ -201,9 +209,19 @@ void affichage_ciel(){
     glVertex3f( taille, -taille,  taille);
     glVertex3f(-taille, -taille,  taille);
 
-    /*Dessous (Z-) - pas visible normalement*/
-    
     glEnd();
+
+    /*TOur soleil blanc*/
+    affichage_etoile(300, 300, 250, 30, 1.0f, 0.95f, 0.6f);
+
+    /*centre soleil orangé*/
+    affichage_etoile(300, 300, 250, 25, 0.9f, 0.5f, 0.1f);
+
+    /*Planète bleue*/
+    affichage_etoile(-350, 200, 150, 18, 0.3f, 0.4f, 0.8f);
+
+    /*Planète rouge*/
+    affichage_etoile(100, -400, 100, 12, 0.7f, 0.25f, 0.15f);
 
     glPopMatrix(); /*Restaure la matrice d'avant*/
 
