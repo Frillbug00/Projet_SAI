@@ -183,7 +183,68 @@ void affichage_sol(){
     glDisable(GL_TEXTURE_2D);
 }
 void affichage_ciel(){
-   
+    float taille = 500.0f;
+    float r_haut = 0.08f, g_haut = 0.08f, b_haut = 0.12f, r_bas = 0.12f, g_bas = 0.12f, b_bas = 0.27f;
+
+    /*Desac la profondeur pour pas clipper avec les autres objets*/
+    glDepthMask(GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+
+    /*Positione notre matrice de dessin sur la position*/
+    glPushMatrix();
+    glTranslatef(position.x, position.y, position.z);
+
+    glShadeModel(GL_SMOOTH); /*Ce qui fait notre degradé, GL calcul les colors inter entre face haut/basse*/
+    glBegin(GL_QUADS);
+
+    /*Face avant (Y+)*/
+    glColor3f(r_bas, g_bas, b_bas);
+    glVertex3f(-taille,  taille, -taille);
+    glVertex3f( taille,  taille, -taille);
+    glColor3f(r_haut, g_haut, b_haut);
+    glVertex3f( taille,  taille,  taille);
+    glVertex3f(-taille,  taille,  taille);
+
+    /*Face arrière (Y-)*/
+    glColor3f(r_bas, g_bas, b_bas);
+    glVertex3f( taille, -taille, -taille);
+    glVertex3f(-taille, -taille, -taille);
+    glColor3f(r_haut, g_haut, b_haut);
+    glVertex3f(-taille, -taille,  taille);
+    glVertex3f( taille, -taille,  taille);
+
+    /*Face droite (X+)*/
+    glColor3f(r_bas, g_bas, b_bas);
+    glVertex3f( taille,  taille, -taille);
+    glVertex3f( taille, -taille, -taille);
+    glColor3f(r_haut, g_haut, b_haut);
+    glVertex3f( taille, -taille,  taille);
+    glVertex3f( taille,  taille,  taille);
+
+    /*Face gauche (X-)*/
+    glColor3f(r_bas, g_bas, b_bas);
+    glVertex3f(-taille, -taille, -taille);
+    glVertex3f(-taille,  taille, -taille);
+    glColor3f(r_haut, g_haut, b_haut);
+    glVertex3f(-taille,  taille,  taille);
+    glVertex3f(-taille, -taille,  taille);
+
+    /*Dessus (Z+)*/
+    glColor3f(r_haut, g_haut, b_haut);
+    glVertex3f(-taille,  taille,  taille);
+    glVertex3f( taille,  taille,  taille);
+    glVertex3f( taille, -taille,  taille);
+    glVertex3f(-taille, -taille,  taille);
+
+    /*Dessous (Z-) pas visible */
+    
+    glEnd();
+
+    glPopMatrix(); /*Restaure la matrice d'avant*/
+
+    /*Reac la profondeur pour les autres objets*/
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
 }
 
 void charger_texture_sol(){
