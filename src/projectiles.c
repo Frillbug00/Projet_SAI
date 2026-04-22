@@ -31,22 +31,35 @@ void afficher_projectile(projectiles *proj) {
 // Retourne 1 si collision avec un ennemi (et détruit les deux)
 int verifier_collision_projectile(projectiles *proj) {
     for (int i = 0; i < nb_ennemies; i++) {
-        if (l_e[i].type == 0) continue;
+        vecteur le_pos = l_e[i].position;
 
-        vecteur diff = soustraction(l_e[i].position, proj->position);
-        float distance = diff.x*diff.x + diff.y*diff.y + diff.z*diff.z;
-        float seuil = (RAYON + RAYON_PROJ) * (RAYON + RAYON_PROJ);
-
-        if (distance <= seuil) {
-            printf("IMPACT : missile a detruit un asteroide\n");
-            l_e[i].type = 0;
-            proj->type = 0;
-            return 1;
+        if(l_e[i].type == 1){
+            /*Asteroide : ancien calcul sphérique*/
+            vecteur diff = soustraction(le_pos, proj->position);
+            float distance = diff.x*diff.x + diff.y*diff.y + diff.z*diff.z;
+            float seuil = (RAYON + RAYON_PROJ) * (RAYON + RAYON_PROJ);
+            if(distance <= seuil){
+                printf("IMPACT : missile a detruit un asteroide\n");
+                l_e[i].type = 0;
+                proj->type = 0;
+                return 1;
+            }
+        }
+        else if(l_e[i].type == 2){
+            /*Vaisseau*/
+            float dx = fabs(le_pos.x - proj->position.x);
+            float dy = fabs(le_pos.y - proj->position.y);
+            float dz = fabs(le_pos.z - proj->position.z);
+            if(dx < 6.5f + RAYON_PROJ && dy < 4.5f + RAYON_PROJ && dz < 1.8f + RAYON_PROJ){
+                printf("IMPACT : missile a detruit un vaisseau\n");
+                l_e[i].type = 0;
+                proj->type = 0;
+                return 1;
+            }
         }
     }
     return 0;
 }
-
 void update_projectile(projectiles *proj) {
     proj->position.x += proj->direction.x * proj->velocite;
     proj->position.y += proj->direction.y * proj->velocite;
@@ -54,7 +67,6 @@ void update_projectile(projectiles *proj) {
     proj->boucle += 1;
 
     if (proj->boucle >= 500) {
-        printf("Disparition\n");
         proj->type = 0;
         return;
     }

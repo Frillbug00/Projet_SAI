@@ -14,26 +14,18 @@ ennemies init_ennemi(int type, float x, float y, float z){
     e.position = v;
 
     /* direction initiale */
-    cible.x = random_float(x-MARGE, x+MARGE);
-    cible.y = random_float(y-MARGE, y+MARGE);
-    cible.z = 0;
+    if(type == 1){
+        cible.x = random_float(x-MARGE, x+MARGE);
+        cible.y = random_float(y-MARGE, y+MARGE);
+        cible.z = 0;
+    }else if(type == 2){
+        cible.x = random_float(x-MARGE, x+MARGE);
+        cible.y = random_float(y-MARGE, y+MARGE);
+        cible.z = z;
+    }
 
     e.direction = normalisation(soustraction(cible, e.position));
     e.velocite = VELOCITE;
-
-    /* ASTEROIDE */
-    if(type == 1){
-        e.velocite = VELOCITE;
-    }
-
-    /* VAISSEAU */
-    else if(type == 2){
-        e.velocite = VELOCITE * 1.5;
-
-        /* les vaisseaux poursuivent le joueur en hauteur aussi */
-        e.direction.z = random_float(-0.1, 0.1);
-        e.direction = normalisation(e.direction);
-    }
 
     return e;
 }
@@ -45,14 +37,14 @@ void afficher_vaisseau(ennemies *e){
     float angle = atan2(e->direction.y, e->direction.x) * 180.0 / 3.14;
     glRotatef(angle, 0, 0, 1);
 
-    /*Corps principal : fuselage allongé et effilé*/
+    /*Corps*/
     glColor3f(0.25f, 0.25f, 0.30f);
     glPushMatrix();
     glScalef(4.0, 0.8, 0.6);
     glutSolidCube(2);
     glPopMatrix();
 
-    /*Nez : cone avant effilé*/
+    /*Nez*/
     glColor3f(0.35f, 0.35f, 0.40f);
     glPushMatrix();
     glTranslatef(4, 0, 0);
@@ -60,7 +52,7 @@ void afficher_vaisseau(ennemies *e){
     glutSolidCone(0.6, 2.5, 12, 4);
     glPopMatrix();
 
-    /*Cockpit : bulle légèrement aplatie sur le dessus du fuselage*/
+    /*Cockpit bulle bleu*/
     glColor3f(0.2f, 0.7f, 1.0f);
     glPushMatrix();
     glTranslatef(1.5, 0, 0.7);
@@ -68,43 +60,22 @@ void afficher_vaisseau(ennemies *e){
     glutSolidSphere(0.8, 12, 12);
     glPopMatrix();
 
-    /*Aile gauche : triangle aplati vers l'arrière*/
+    /*Aile gauche */
     glColor3f(0.20f, 0.20f, 0.25f);
     glBegin(GL_TRIANGLES);
-        glVertex3f( 2.0f, -1.0f,  0.0f);   /*base avant*/
-        glVertex3f(-2.5f, -4.5f,  0.0f);   /*pointe extérieure*/
-        glVertex3f(-2.0f, -1.0f,  0.0f);   /*base arrière*/
+    glVertex3f( 2.0f, 0.0f,  0.0f);   /*base avant*/
+    glVertex3f(-2.5f, -4.5f,  0.0f);   /*pointe extérieure*/
+    glVertex3f(-2.0f, 0.0f,  0.0f);   /*base arrière*/
     glEnd();
 
     /*Aile droite : symétrique*/
     glBegin(GL_TRIANGLES);
-        glVertex3f( 2.0f,  1.0f,  0.0f);
-        glVertex3f(-2.5f,  4.5f,  0.0f);
-        glVertex3f(-2.0f,  1.0f,  0.0f);
+    glVertex3f( 2.0f,  0.0f,  0.0f);
+    glVertex3f(-2.5f,  4.5f,  0.0f);
+    glVertex3f(-2.0f,  0.0f,  0.0f);
     glEnd();
 
-    /*Epaisseur aile gauche (face dessous)*/
-    glColor3f(0.15f, 0.15f, 0.18f);
-    glBegin(GL_TRIANGLES);
-        glVertex3f( 2.0f, -1.0f, -0.15f);
-        glVertex3f(-2.5f, -4.5f, -0.15f);
-        glVertex3f(-2.0f, -1.0f, -0.15f);
-    glEnd();
-
-    /*Epaisseur aile droite (face dessous)*/
-    glBegin(GL_TRIANGLES);
-        glVertex3f( 2.0f,  1.0f, -0.15f);
-        glVertex3f(-2.5f,  4.5f, -0.15f);
-        glVertex3f(-2.0f,  1.0f, -0.15f);
-    glEnd();
-
-    /*Dérive verticale : petite ailette dorsale*/
-    glColor3f(0.22f, 0.22f, 0.28f);
-    glBegin(GL_TRIANGLES);
-        glVertex3f( 1.0f,  0.0f,  0.6f);   /*base avant*/
-        glVertex3f(-2.0f,  0.0f,  1.8f);   /*sommet*/
-        glVertex3f(-2.0f,  0.0f,  0.6f);   /*base arrière*/
-    glEnd();
+   
 
     glPopMatrix();
 }

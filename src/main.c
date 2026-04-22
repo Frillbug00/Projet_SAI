@@ -31,10 +31,20 @@ int colision(){
     }
     for(int i=0;i<nb_ennemies;i++){
         vecteur le_pos = l_e[i].position;
-        float d_centre = pow((le_pos.x-position.x), 2)+pow((le_pos.y-position.y), 2)+pow((le_pos.z-position.z), 2);
-        float d_rayons = pow(taille_joueur, 2)+pow(RAYON, 2);
-        if(d_rayons+5>d_centre){
-            printf("COLISION : Asteroide\n");
+        if(l_e[i].type == 1){
+            float d_centre = pow((le_pos.x-position.x), 2)+pow((le_pos.y-position.y), 2)+pow((le_pos.z-position.z), 2);
+            float d_rayons = pow(taille_joueur, 2)+pow(RAYON, 2);
+            if(d_rayons+5>d_centre){
+                printf("COLISION : Asteroide\n");
+            }
+        }else if(l_e[i].type == 2){
+            float dx = fabs(le_pos.x - position.x);  /*fuselage+cone : de -4 à +6.5*/
+            float dy = fabs(le_pos.y - position.y);  /*ailes : de -4.5 à +4.5*/
+            float dz = fabs(le_pos.z - position.z);  /*dérive : de -0.3 à +1.8*/
+
+            if(dx < 6.5f && dy < 4.5f && dz < 1.8f){
+                printf("COLISION : Vaisseau\n");
+            }
         }
     }
 }
