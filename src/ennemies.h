@@ -7,10 +7,13 @@
 #include "GL/glut.h"
 #include "math.h"
 #include "vecteur.h"
+
 #define NB_MAX_ENNEMIES 100
 #define VELOCITE 0.05
 #define RAYON 2
 #define MARGE 5
+#define TAUX_VAISSEAUX 5 
+/*TAUX à 5 = 1/5*/
 typedef struct ennemies{
     int type;
     float velocite;

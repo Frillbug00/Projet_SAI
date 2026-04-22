@@ -107,51 +107,6 @@ void afficher_axes(){
     glVertex3f(0,0,1000);
 }
 
-void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
-
-    // face basse
-    glColor3f(1, 0, 0);
-    glVertex3f(xmin, ymin, zmin);
-    glVertex3f(xmin, ymax, zmin);
-    glVertex3f(xmax, ymax, zmin);
-    glVertex3f(xmax, ymin, zmin);
-
-    //face avant
-    glColor3f(0, 1, 0);
-    glVertex3f(xmin, ymin, zmin);
-    glVertex3f(xmin, ymin, zmax);
-    glVertex3f(xmax, ymin, zmax);
-    glVertex3f(xmax, ymin, zmin);
-
-    //face gauche
-    glColor3f(0, 0, 1);
-    glVertex3f(xmin, ymin, zmin);
-    glVertex3f(xmin, ymax, zmin);
-    glVertex3f(xmin, ymax, zmax);
-    glVertex3f(xmin, ymin, zmax);
-
-    //face droite
-    glColor3f(1, 1, 0);
-    glVertex3f(xmax, ymin, zmin);
-    glVertex3f(xmax, ymax, zmin);
-    glVertex3f(xmax, ymax, zmax);
-    glVertex3f(xmax, ymin, zmax);
-
-    //face arrière
-    glColor3f(0, 1, 1);
-    glVertex3f(xmin, ymax, zmin);
-    glVertex3f(xmax, ymax, zmin);
-    glVertex3f(xmax, ymax, zmax);
-    glVertex3f(xmin, ymax, zmax);
-
-    //face dessus
-    glColor3f(1, 0, 1);
-    glVertex3f(xmin, ymin, zmax);
-    glVertex3f(xmax, ymin, zmax);
-    glVertex3f(xmax, ymax, zmax);
-    glVertex3f(xmin, ymax, zmax);
-}
-
 void affichage_sol(){
     float taille = 1000.0f; // moitié de la largeur et longueur du sol
     glEnable(GL_TEXTURE_2D);
@@ -236,7 +191,7 @@ void affichage_ciel(){
     glVertex3f( taille, -taille,  taille);
     glVertex3f(-taille, -taille,  taille);
 
-    /*Dessous (Z-) pas visible */
+    /*Dessous (Z-) - pas visible normalement*/
     
     glEnd();
 
@@ -298,7 +253,6 @@ void Affichage(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glBegin(GL_QUADS);
-    /*afficherCube(20,20,20,30,30,30);*/
     glEnd();
     affichage_ciel();
     affichage_sol();
@@ -306,7 +260,7 @@ void Affichage(){
     afficher_projectiles();
 
     glBegin(GL_LINES);
-    afficher_axes();
+    /*afficher_axes();*/
     glEnd();
     int i = colision();
     /*Interface 2D*/
