@@ -2,7 +2,7 @@
 #define _PROJECTILES_H_
 #include "math.h"
 #include "vecteur.h"
-#define NB_MAX_PROJECTILES 100
+#define NB_MAX_PROJECTILES 1000
 #define RAYON_PROJ 0.1
 typedef struct projectiles{
     int boucle;

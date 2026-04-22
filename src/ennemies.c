@@ -12,14 +12,14 @@ ennemies init_ennemi(int type, float x, float y, float z){
     e.position = v;
     // cible aléatoire au sol
 
-    cible.x = random_float(-5, 5);
-    cible.y = random_float(-5, 5);
+    cible.x = random_float(x-MARGE, x+MARGE);
+    cible.y = random_float(y-MARGE, y+MARGE);
     cible.z = 0;
 
     // direction = cible - position
     e.direction = soustraction(cible, e.position);
     e.direction = normalisation(e.direction);
-    e.velocite = 0.05;
+    e.velocite = VELOCITE;
     /*Notre ennemie est un astéroide*/
     if(type == 1){
         
@@ -57,35 +57,42 @@ void update_ennemies(vecteur devant, vecteur p){
     for(int i = 0; i < nb_ennemies; i++){
         update_ennemi(&l_e[i]);
 
-        /*Si l'ennemi est mort*/
+        /* Si l'ennemi est mort */
         if(l_e[i].type == 0){
             vecteur spawn;
-            float distance = random_float(15, 100);
+            vecteur dir;
 
-            spawn.x = p.x + devant.x * distance;
-            spawn.y = p.y + devant.y * distance;
-            spawn.z = p.z + devant.z * distance;
+            /* direction aléatoire autour du joueur */
+            dir.x = random_float(-1, 1);
+            dir.y = random_float(-1, 1);
+            dir.z = random_float(0.2, 1);
+            dir = normalisation(dir);
 
-            /*Bruit de spawn*/
-            spawn.x += random_float(-15, 15);
-            spawn.y += random_float(-15, 15);
-            spawn.z += random_float(-20, 20);
+            float distance = random_float(30, 120);
+
+            spawn.x = p.x + dir.x * distance;
+            spawn.y = p.y + dir.y * distance;
+            spawn.z = p.z + dir.z * distance;
 
             l_e[i] = init_ennemi(1, spawn.x, spawn.y, spawn.z);
         }
     }
 
-    // Initialisation au début seulement
+    /* Initialisation au début seulement */
     while(nb_ennemies < NB_MAX_ENNEMIES){
         vecteur spawn;
-        float distance = random_float(15, 100);
+        vecteur dir;
 
-        spawn.x = p.x + devant.x * distance;
-        spawn.y = p.y + devant.y * distance;
-        spawn.z = p.z + devant.z * distance;
-        spawn.x += random_float(-15, 15);
-            spawn.y += random_float(-15, 15);
-            spawn.z += random_float(-20, 20);
+        dir.x = random_float(-1, 1);
+        dir.y = random_float(-1, 1);
+        dir.z = random_float(0.2, 1);
+        dir = normalisation(dir);
+
+        float distance = random_float(30, 120);
+
+        spawn.x = p.x + dir.x * distance;
+        spawn.y = p.y + dir.y * distance;
+        spawn.z = p.z + dir.z * distance;
 
         l_e[nb_ennemies] = init_ennemi(1, spawn.x, spawn.y, spawn.z);
         nb_ennemies++;

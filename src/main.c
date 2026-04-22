@@ -16,9 +16,9 @@ float taille_joueur = 1;
 float rota_z = 0.1; // Rotation autour de z
 
 /*Représentation joueur*/
-float velocite = 0;
+float velocite = 0.015;
 float vitesse = 0.0001;
-vecteur position = {-20,-20,10};
+vecteur position = {0,0,40};
 vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
@@ -163,6 +163,9 @@ void affichage_sol(){
     glEnd();
     glDisable(GL_TEXTURE_2D);
 }
+void affichage_ciel(){
+   
+}
 
 void charger_texture_sol(){
     int width, height, nrChannels;
@@ -206,7 +209,7 @@ void Affichage(){
     top = 5;
     near = 5;
     far = 1000;
-
+   
     glFrustum(left, right, bottom, top, near, far);
     gluLookAt(position.x, position.y, position.z, 
         position.x+devant.x, position.y+devant.y, position.z+devant.z,
@@ -215,8 +218,9 @@ void Affichage(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glBegin(GL_QUADS);
-    afficherCube(20,20,20,30,30,30);
+    /*afficherCube(20,20,20,30,30,30);*/
     glEnd();
+    affichage_ciel();
     affichage_sol();
     afficher_ennemies();
     afficher_projectiles();
@@ -255,11 +259,15 @@ void GererClavier(unsigned char touche, int x, int y){
     /* Avancer, reculer */
     if (touche == 'z'){
         //position = addition(position, devant);
-        velocite += vitesse;
+        if(velocite < V_MAX){
+            velocite += vitesse;
+        }
     }
     if (touche == 's'){
         //position = soustraction(position, devant);
-        velocite -= vitesse;
+        if(velocite > -V_MAX){
+            velocite -= vitesse;
+        }
     }
 
     /* Version 1 :
