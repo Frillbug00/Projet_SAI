@@ -44,6 +44,7 @@ void affichage_vitesse(){
     char str_nbr[10];
     char bout;
     float pos_sup;
+    int max_taille = 700;
 
     /*Affichage du mot "vitesse"*/
     sprintf(str_nbr, "%f", velocite);
@@ -66,11 +67,29 @@ void affichage_vitesse(){
     
     pos_sup = velocite*25000;
 
+    if (pos_sup < 0){
+        glColor3f(1, 0, 0);
+        glVertex2f(10,max_taille);
+        glVertex2f(30,max_taille);
+        glVertex2f(30,max_taille+pos_sup);
+        glVertex2f(10,max_taille+pos_sup);
+    }
+    else{
+        glVertex2f(10,10);
+        glVertex2f(30,10);
+        glVertex2f(30,10+pos_sup);
+        glVertex2f(10,10+pos_sup);
+    }
+
+    glColor3f(1, 1, 1);
+    glEnd();
+
+    /* Affichage du rectangle de la limite de la vitesse */
+    glBegin(GL_LINE_LOOP);
     glVertex2f(10,10);
     glVertex2f(30,10);
-    glVertex2f(30,10+pos_sup);
-    glVertex2f(10,10+pos_sup);
-
+    glVertex2f(30,max_taille);
+    glVertex2f(10,max_taille);
     glEnd();
 }
 
