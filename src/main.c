@@ -23,6 +23,7 @@ vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 /*---------------------------*/
+int texture_sol;
 
 int colision(){
     if (position.z <=0+NEAR){
