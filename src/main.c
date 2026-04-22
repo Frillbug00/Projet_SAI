@@ -9,6 +9,7 @@
 #include "projectiles.h"
 #define NEAR 5
 #define V_MAX 0.03
+#include "../lib/stb_image.h"
 
 int taille_fenetre = 800;
 float taille_joueur = 1;
@@ -133,23 +134,56 @@ void afficherCube(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax){
 
 void affichage_sol(){
     float taille = 1000.0f; // moitié de la largeur et longueur du sol
-
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_sol);
     glBegin(GL_QUADS);
 
+    glColor3f(1,1,1);
+
+
     // coin bas gauche
-    glColor3f(0.6f, 0.6f, 0.5f); // sable un peu foncé
+    //glColor3f(0.6f, 0.6f, 0.5f); // sable un peu foncé
+
+    glTexCoord2f(0,0);
     glVertex3f(-taille, -taille, 0.0f);
 
     // coin bas droit
+    glTexCoord2f(10,0);
     glVertex3f(taille, -taille, 0.0f);
 
     // coin haut droit
+    glTexCoord2f(10,10);
     glVertex3f(taille, taille, 0.0f);
 
     // coin haut gauche
+    glTexCoord2f(0,10);
     glVertex3f(-taille, taille, 0.0f);
 
     glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void charger_texture_sol(){
+    int width, height, nrChannels;
+    /*Gestion de la texture :*/
+
+    unsigned char *data = stbi_load("./img/texture_lune.jpg", &width, &height, &nrChannels, 0);
+    glGenTextures(1, &texture_sol);  
+    glBindTexture(GL_TEXTURE_2D, texture_sol); 
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (!data){
+        printf("Erreur chargement d'image\n"); // Si ça affiche ça, alors l'image est mal chargée
+    }
+    else{
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+    }
+    stbi_image_free(data);
 }
 
 void Affichage(){
@@ -181,8 +215,8 @@ void Affichage(){
     glLoadIdentity();
     glBegin(GL_QUADS);
     afficherCube(20,20,20,30,30,30);
-    affichage_sol();
     glEnd();
+    affichage_sol();
     afficher_ennemies();
     afficher_projectiles();
 
@@ -352,6 +386,7 @@ int main(int argc, char* argv[]){
     glutDisplayFunc(Affichage);
     glutIdleFunc(Animer);
     glutKeyboardFunc(GererClavier);
+    charger_texture_sol();
     glutMainLoop();
     return 0;
 }
