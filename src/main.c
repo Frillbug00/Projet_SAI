@@ -85,14 +85,20 @@ void affichage_vitesse(){
     /* Affichage du rectangle de vitesse*/
     glBegin(GL_QUADS);
     
-    pos_sup = velocite*25000;
+    //pos_sup = velocite*25000;
+    if (vitesse == 0){
+        pos_sup = 0;
+    }
+    else{
+        pos_sup = (velocite / V_MAX) * max_taille;
+    }
 
     if (pos_sup < 0){
         glColor3f(1, 0, 0);
-        glVertex2f(10,max_taille);
-        glVertex2f(30,max_taille);
-        glVertex2f(30,max_taille+pos_sup);
-        glVertex2f(10,max_taille+pos_sup);
+        glVertex2f(10,10+max_taille);
+        glVertex2f(30,10+max_taille);
+        glVertex2f(30,10+max_taille+pos_sup);
+        glVertex2f(10,10+max_taille+pos_sup);
     }
     else{
         glVertex2f(10,10);
@@ -108,8 +114,8 @@ void affichage_vitesse(){
     glBegin(GL_LINE_LOOP);
     glVertex2f(10,10);
     glVertex2f(30,10);
-    glVertex2f(30,max_taille);
-    glVertex2f(10,max_taille);
+    glVertex2f(30,10+max_taille);
+    glVertex2f(10,10+max_taille);
     glEnd();
 }
 
