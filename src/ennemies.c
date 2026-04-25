@@ -108,6 +108,8 @@ void update_ennemi(ennemies* e){
     e->position.z += e->direction.z * e->velocite;
     if(e->position.z+RAYON <=0){
         e->type = 0;
+        vie_carte--;
+        printf("La carte a pris des dégâts. Vie restante : %d\n", vie_carte);
     }
 }
 

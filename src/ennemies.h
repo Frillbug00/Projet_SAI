@@ -21,6 +21,7 @@ typedef struct ennemies{
 }ennemies;
 extern int nb_ennemies;
 extern ennemies l_e[NB_MAX_ENNEMIES];
+extern int vie_carte;
 ennemies init_ennemi(int type, float x, float y, float z);
 
 void afficher_ennemi(ennemies *e);
