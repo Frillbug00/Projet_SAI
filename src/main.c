@@ -23,11 +23,17 @@ vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 /*---------------------------*/
+/*Différentes vies*/
+int vie_vaisseau = 100;
+int vie_carte = 100;
+/*---------------------------*/
 int texture_sol;
 
 int colision(){
     if (position.z <=0+NEAR){
         printf("COLISION : Sous la map\n");
+        vie_vaisseau --;
+        printf("Vie restante vaisseau : %d\n", vie_vaisseau);
     }
     for(int i=0;i<nb_ennemies;i++){
         vecteur le_pos = l_e[i].position;
@@ -36,6 +42,8 @@ int colision(){
             float d_rayons = pow(taille_joueur, 2)+pow(RAYON, 2);
             if(d_rayons+5>d_centre){
                 printf("COLISION : Asteroide\n");
+                vie_vaisseau --;
+                printf("Vie restante vaisseau : %d\n", vie_vaisseau);
             }
         }else if(l_e[i].type == 2){
             float dx = fabs(le_pos.x - position.x);  /*fuselage+cone : de -4 à +6.5*/
@@ -44,6 +52,8 @@ int colision(){
 
             if(dx < 6.5f && dy < 4.5f && dz < 1.8f){
                 printf("COLISION : Vaisseau\n");
+                vie_vaisseau --;
+                printf("Vie restante vaisseau : %d\n", vie_vaisseau);
             }
         }
     }
@@ -100,6 +110,35 @@ void affichage_vitesse(){
     glVertex2f(30,10);
     glVertex2f(30,max_taille);
     glVertex2f(10,max_taille);
+    glEnd();
+}
+
+void affichage_vie_vaisseau(){
+    float pos_sup;
+    int max_taille = 700;
+    int vie_max = 100*7;
+
+    /* Affichage du rectangle de vie du vaisseau*/
+    glBegin(GL_QUADS);
+    
+    pos_sup = vie_vaisseau*7;
+
+    glColor3f(1, 0, 0);
+    glVertex2f(770,10);
+    glVertex2f(790,10);
+    glVertex2f(790,10+pos_sup);
+    glVertex2f(770,10+pos_sup);
+    glColor3f(1, 1, 1);
+    glEnd();
+
+    /* Affichage du rectangle de la limite de la vitesse */
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1, 0, 0);
+    glVertex2f(770,10);
+    glVertex2f(790,10);
+    glVertex2f(790,10+vie_max);
+    glVertex2f(770,10+vie_max);
+    glColor3f(1, 1, 1);
     glEnd();
 }
 
@@ -300,6 +339,7 @@ void Affichage(){
     
     /*Contenu de l'interface 2D*/
     affichage_vitesse();
+    affichage_vie_vaisseau();
 
     glutSwapBuffers();
 }
