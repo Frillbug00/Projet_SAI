@@ -71,7 +71,7 @@ int colision(){
 }
 
 void affichage_score(){
-    char* str_vitesse = "Score :";
+    char* str_score = "Score :";
     int aff = 0;
     char str_nbr[10];
     char bout;
@@ -83,13 +83,57 @@ void affichage_score(){
     glColor3f(1, 1, 1);
     for (aff = 0; aff < 7; aff++){
         glRasterPos2f(700 + aff * 10,taille_fenetre - 10);
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_vitesse[aff]);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_score[aff]);
     }
 
     /*Affichage du score via un nombre*/
     aff = 0;
     while ((bout = str_nbr[aff]) != '\0'){
         glRasterPos2f(700 + aff * 10,taille_fenetre - 20);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_nbr[aff]);
+        aff++;
+    }
+}
+
+void affichage_fin(int raison){
+    char* str_raison1 = "Vous etes mort.";
+    char* str_raison2 = "La planete a ete detruite.";
+    char* str_score = "Score :";
+    int aff = 0;
+    char str_nbr[10];
+    char bout;
+    float pos_sup;
+    int max_taille = 700;
+
+    /*Affichage de la raison*/
+
+    glColor3f(1, 1, 1);
+
+    if (raison == 0){
+        for (aff = 0; aff < 15; aff++){
+        glRasterPos2f(taille_fenetre/2-taille_fenetre/4 + aff * 10,taille_fenetre/2);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_raison1[aff]);
+        }
+    }
+    else{
+        for (aff = 0; aff < 26; aff++){
+        glRasterPos2f(taille_fenetre/2-taille_fenetre/4 + aff * 10,taille_fenetre/2);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_raison2[aff]);
+        }
+    }
+
+    /*Affichage du mot "score"*/
+    glColor3f(1, 1, 1);
+    for (aff = 0; aff < 7; aff++){
+        glRasterPos2f(taille_fenetre/2-taille_fenetre/4 + aff * 10,taille_fenetre/2 - 100);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_score[aff]);
+    }
+
+    /*Affichage du score*/
+    sprintf(str_nbr, "%d", score);
+    aff = 0;
+    while ((bout = str_nbr[aff]) != '\0'){
+        glRasterPos2f(taille_fenetre/2-taille_fenetre/4 + aff * 10,taille_fenetre/2 - 110);
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_nbr[aff]);
         aff++;
     }
@@ -373,53 +417,72 @@ void Affichage(){
     if (invulnerabilite > 0){
         invulnerabilite--;
     }
-
-    /* Interface 3D*/
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    upx = 0;
-    upy = 0;
-    upz = 1;
     
-    left = -5;
-    right = 5;
-    bottom = -5;
-    top = 5;
-    near = 5;
-    far = 1000;
-   
-    glFrustum(left, right, bottom, top, near, far);
-    gluLookAt(position.x, position.y, position.z, 
-        position.x+devant.x, position.y+devant.y, position.z+devant.z,
-         haut.x, haut.y, haut.z);
+    if ((vie_vaisseau <= 0)||(vie_carte <= 0)){
+        /*Interface 2D*/
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0,taille_fenetre,0,taille_fenetre, 0, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
+        /*Contenu de l'interface 2D*/
+        if (vie_vaisseau <= 0){
+            affichage_fin(0);
+        }
+        else{
+            affichage_fin(1);
+        }
+    }
+    else{
+        /* Interface 3D*/
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glBegin(GL_QUADS);
-    glEnd();
-    affichage_ciel();
-    affichage_sol();
-    afficher_ennemies();
-    afficher_projectiles();
-
-    glBegin(GL_LINES);
-    /*afficher_axes();*/
-    glEnd();
-    int i = colision();
-    /*Interface 2D*/
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0,taille_fenetre,0,taille_fenetre, 0, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+        upx = 0;
+        upy = 0;
+        upz = 1;
+        
+        left = -5;
+        right = 5;
+        bottom = -5;
+        top = 5;
+        near = 5;
+        far = 1000;
     
-    /*Contenu de l'interface 2D*/
-    affichage_vitesse();
-    affichage_vie_vaisseau();
-    affichage_vie_carte();
-    affichage_score();
+        glFrustum(left, right, bottom, top, near, far);
+        gluLookAt(position.x, position.y, position.z, 
+            position.x+devant.x, position.y+devant.y, position.z+devant.z,
+            haut.x, haut.y, haut.z);
 
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glBegin(GL_QUADS);
+        glEnd();
+        affichage_ciel();
+        affichage_sol();
+        afficher_ennemies();
+        afficher_projectiles();
+
+        glBegin(GL_LINES);
+        /*afficher_axes();*/
+        glEnd();
+        int i = colision();
+        /*Interface 2D*/
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0,taille_fenetre,0,taille_fenetre, 0, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
+        /*Contenu de l'interface 2D*/
+        affichage_vitesse();
+        affichage_vie_vaisseau();
+        affichage_vie_carte();
+        affichage_score();
+    }
+
+    
     glutSwapBuffers();
 }
 
