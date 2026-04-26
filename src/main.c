@@ -24,9 +24,10 @@ vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 int invulnerabilite = 0; // nbr de cycles d'invulnérabilité restant.
 /*---------------------------*/
-/*Différentes vies*/
+/*Différentes stats*/
 int vie_vaisseau = 10;
 int vie_carte = 100;
+int score = 0;
 /*---------------------------*/
 int texture_sol;
 
@@ -66,6 +67,31 @@ int colision(){
                 printf("Vie restante vaisseau : %d\n", vie_vaisseau);
             }
         }
+    }
+}
+
+void affichage_score(){
+    char* str_vitesse = "Score :";
+    int aff = 0;
+    char str_nbr[10];
+    char bout;
+    float pos_sup;
+    int max_taille = 700;
+
+    /*Affichage du mot "score"*/
+    sprintf(str_nbr, "%d", score);
+    glColor3f(1, 1, 1);
+    for (aff = 0; aff < 7; aff++){
+        glRasterPos2f(700 + aff * 10,taille_fenetre - 10);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_vitesse[aff]);
+    }
+
+    /*Affichage du score via un nombre*/
+    aff = 0;
+    while ((bout = str_nbr[aff]) != '\0'){
+        glRasterPos2f(700 + aff * 10,taille_fenetre - 20);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str_nbr[aff]);
+        aff++;
     }
 }
 
@@ -392,6 +418,7 @@ void Affichage(){
     affichage_vitesse();
     affichage_vie_vaisseau();
     affichage_vie_carte();
+    affichage_score();
 
     glutSwapBuffers();
 }

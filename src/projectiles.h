@@ -12,6 +12,7 @@ typedef struct projectiles{
 }projectiles;
 
 extern projectiles l_p[NB_MAX_PROJECTILES];
+extern int score;
 
 projectiles init_projectile(int type, vecteur p, vecteur devant);
 

@@ -42,6 +42,7 @@ int verifier_collision_projectile(projectiles *proj) {
                 printf("IMPACT : missile a detruit un asteroide\n");
                 l_e[i].type = 0;
                 proj->type = 0;
+                score += 100;
                 return 1;
             }
         }
@@ -52,6 +53,7 @@ int verifier_collision_projectile(projectiles *proj) {
             float dz = fabs(le_pos.z - proj->position.z);
             if(dx < 6.5f + RAYON_PROJ && dy < 4.5f + RAYON_PROJ && dz < 1.8f + RAYON_PROJ){
                 printf("IMPACT : missile a detruit un vaisseau\n");
+                score += 300;
                 l_e[i].type = 0;
                 proj->type = 0;
                 return 1;
