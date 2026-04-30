@@ -23,6 +23,7 @@ vecteur devant = {1,0,0};
 vecteur haut = {0,0,1};
 vecteur droite = {0,1,0};
 int invulnerabilite = 0; // nbr de cycles d'invulnérabilité restant.
+int cooldown = 0; // Nbr de cycles restants avant de pouvoir tirer à nouveau
 /*---------------------------*/
 /*Différentes stats*/
 int vie_vaisseau = 10;
@@ -417,6 +418,10 @@ void Affichage(){
     if (invulnerabilite > 0){
         invulnerabilite--;
     }
+    /*Gestion du cooldown*/
+    if (cooldown > 0){
+        cooldown--;
+    }
     
     if ((vie_vaisseau <= 0)||(vie_carte <= 0)){
         /*Interface 2D*/
@@ -489,8 +494,9 @@ void Affichage(){
 void Animer(){
     float rayon = 10;
     /*Gestion des touches*/
-    if (touches[' ']){
+    if ((touches[' ']) && (cooldown == 0)){
         tirer_double_projectile(position, devant, droite, haut);
+        cooldown = 15;
     }
     /* Avancer, reculer */
     if (touches['z']){
