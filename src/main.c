@@ -14,7 +14,7 @@
 int taille_fenetre = 800;
 float taille_joueur = 1;
 float rota_z = 0.1; // Rotation autour de z
-
+int touches[256] = {0};
 /*Représentation joueur*/
 float velocite = 0.015;
 float vitesse = 0.0001;
@@ -487,82 +487,25 @@ void Affichage(){
 }
 
 void Animer(){
-    position = addition(position, produit(devant, velocite));
-    update_ennemies(devant, position);
-    update_projectiles();
-    glutPostRedisplay();
-}
-
-void GererClavier(unsigned char touche, int x, int y){
     float rayon = 10;
-    printf(" Touche: %c Souris : %d %d \n",touche,x,y);
-
-    if (touche == ' '){
+    /*Gestion des touches*/
+    if (touches[' ']){
         tirer_double_projectile(position, devant, droite, haut);
     }
     /* Avancer, reculer */
-    if (touche == 'z'){
-        //position = addition(position, devant);
+    if (touches['z']){
         if(velocite < V_MAX){
             velocite += vitesse;
         }
     }
-    if (touche == 's'){
-        //position = soustraction(position, devant);
+    if (touches['s']){
         if(velocite > -V_MAX){
             velocite -= vitesse;
         }
     }
 
-    /* Version 1 :
-    // Gauche, droite 
-    if (touche == 'q'){
-        devant = rota_autour_Z(devant, rota_z);
-        droite = rota_autour_Z(droite, rota_z);
-
-        devant = normalisation(devant);
-        droite = normalisation(droite);
-
-        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
-        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
-    }
-    if (touche == 'd'){
-        devant = rota_autour_Z(devant, -rota_z);
-        droite = rota_autour_Z(droite, -rota_z);
-
-        devant = normalisation(devant);
-        droite = normalisation(droite);
-
-        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
-        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
-    }
-
-    if (touche == 'a'){
-        devant = rota_autour_Y(devant, rota_z);
-        haut = rota_autour_Y(haut, rota_z);
-
-        devant = normalisation(devant);
-        haut = normalisation(haut);
-
-        printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
-        printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
-    }
-
-    if (touche == 'e'){
-        haut = rota_autour_X(haut, rota_z);
-        droite = rota_autour_X(droite, rota_z);
-
-        haut = normalisation(haut);
-        droite = normalisation(droite);
-
-        printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
-        printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
-    }
-
-    /*Version 2*/
-
     // Rotation sur l'axe Z
-    if (touche == 'q'){
+    if (touches['q']){
         devant = rodriguez(devant, haut, rota_z);
         droite = rodriguez(droite, haut, rota_z);
 
@@ -572,7 +515,7 @@ void GererClavier(unsigned char touche, int x, int y){
         printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
         printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
     }
-    if (touche == 'd'){
+    if (touches['d']){
         devant = rodriguez(devant, haut, -rota_z);
         droite = rodriguez(droite, haut, -rota_z);
 
@@ -584,7 +527,7 @@ void GererClavier(unsigned char touche, int x, int y){
     }
 
     // Rotation sur l'axe Y
-    if (touche == 'a'){
+    if (touches['a']){
         devant = rodriguez(devant, droite, -rota_z);
         haut = rodriguez(haut, droite, -rota_z);
 
@@ -594,7 +537,7 @@ void GererClavier(unsigned char touche, int x, int y){
         printf("Devant : %f, %f, %f", devant.x, devant.y, devant.z);
         printf(" |Haut : %f, %f, %f\n", haut.x, haut.y, haut.z);
     }
-    if (touche == 'e'){
+    if (touches['e']){
         devant = rodriguez(devant, droite, rota_z);
         haut = rodriguez(haut, droite, rota_z);
 
@@ -606,7 +549,7 @@ void GererClavier(unsigned char touche, int x, int y){
     }
 
     // Rotation sur l'axe X
-    if (touche == 'w'){
+    if (touches['w']){
         haut = rodriguez(haut, devant, rota_z);
         droite = rodriguez(droite, devant, rota_z);
 
@@ -616,7 +559,7 @@ void GererClavier(unsigned char touche, int x, int y){
         printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
         printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
     }
-    if (touche == 'c'){
+    if (touches['c']){
         haut = rodriguez(haut, devant, -rota_z);
         droite = rodriguez(droite, devant, -rota_z);
 
@@ -626,6 +569,23 @@ void GererClavier(unsigned char touche, int x, int y){
         printf("Haut : %f, %f, %f", haut.x, haut.y, haut.z);
         printf(" |Droite : %f, %f, %f\n", droite.x, droite.y, droite.z);
     }
+
+    position = addition(position, produit(devant, velocite));
+    update_ennemies(devant, position);
+    update_projectiles();
+    glutPostRedisplay();
+}
+
+void GererClavier(unsigned char touche, int x, int y){
+    printf(" Touche: %c Souris : %d %d \n",touche,x,y);
+}
+
+void keyDown(unsigned char key, int x, int y){
+    touches[key] = 1;
+}
+
+void keyUp(unsigned char key, int x, int y){
+    touches[key] = 0;
 }
 
 int main(int argc, char* argv[]){
@@ -638,7 +598,9 @@ int main(int argc, char* argv[]){
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(Affichage);
     glutIdleFunc(Animer);
-    glutKeyboardFunc(GererClavier);
+    //glutKeyboardFunc(GererClavier);
+    glutKeyboardFunc(keyDown);
+    glutKeyboardUpFunc(keyUp);
     charger_texture_sol();
     glutMainLoop();
     return 0;
