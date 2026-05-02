@@ -13,7 +13,7 @@
 
 int taille_fenetre = 800;
 float taille_joueur = 1;
-float rota_z = 0.1; // Rotation autour de z
+float rota_z = 0.025; // Rotation autour de z
 int touches[256] = {0};
 /*Représentation joueur*/
 float velocite = 0.015;
