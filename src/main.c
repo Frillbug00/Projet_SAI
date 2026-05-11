@@ -600,7 +600,7 @@ int main(int argc, char* argv[]){
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(taille_fenetre, taille_fenetre);
     glutInitWindowPosition(50, 50);
-    glutCreateWindow("Une fenetre OpenGL");
+    glutCreateWindow("Asteroid Shooter");
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(Affichage);
     glutIdleFunc(Animer);
