@@ -8,7 +8,7 @@
 #include "math.h"
 #include "vecteur.h"
 
-#define NB_MAX_ENNEMIES 100
+#define NB_MAX_ENNEMIES 10
 #define VELOCITE 0.05
 #define RAYON 2
 #define MARGE 5

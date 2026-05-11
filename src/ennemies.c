@@ -14,11 +14,11 @@ ennemies init_ennemi(int type, float x, float y, float z){
     e.position = v;
 
     /* direction initiale */
-    if(type == 1){
+    if(type == 1){ /*Si c'est un asteroide*/
         cible.x = random_float(x-MARGE, x+MARGE);
         cible.y = random_float(y-MARGE, y+MARGE);
         cible.z = 0;
-    }else if(type == 2){
+    }else if(type == 2){ /*Si c'est un vaisseau*/
         cible.x = random_float(x-MARGE, x+MARGE);
         cible.y = random_float(y-MARGE, y+MARGE);
         cible.z = z;
@@ -161,6 +161,8 @@ void update_ennemies(vecteur devant, vecteur p){
         spawn.y = p.y + dir.y * distance;
         spawn.z = p.z + dir.z * distance;
         type = 1;
+
+        /*Chiffre entre 1 et taux VAISSEAUX (une chance sur taux vaisseau)*/
         alea = rand() % TAUX_VAISSEAUX;
 
         if(alea == 1){

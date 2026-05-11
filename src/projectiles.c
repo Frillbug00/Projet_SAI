@@ -34,7 +34,7 @@ int verifier_collision_projectile(projectiles *proj) {
         vecteur le_pos = l_e[i].position;
 
         if(l_e[i].type == 1){
-            /*Asteroide : ancien calcul sphérique*/
+            /*Asteroide */
             vecteur diff = soustraction(le_pos, proj->position);
             float distance = diff.x*diff.x + diff.y*diff.y + diff.z*diff.z;
             float seuil = (RAYON + RAYON_PROJ) * (RAYON + RAYON_PROJ);
@@ -102,7 +102,7 @@ void tirer_projectile(vecteur p, vecteur direction) {
 }
 
 void tirer_double_projectile(vecteur position, vecteur devant, vecteur droite, vecteur haut) {
-    float dist_devant = 5.0;  // distance devant le joueur
+    float dist_devant = 5.0;  /*distance devant le joueur*/
     float ecart       = 2.0;  // écart gauche/droite (en unités monde)
     float hauteur     = 1.5;  // décalage vers le bas
 
